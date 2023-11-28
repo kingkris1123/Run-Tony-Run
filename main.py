@@ -1,4 +1,6 @@
 import pygame
+
+
 # import character / enemy class
 from characters.player import *
 from characters.enemy import *
@@ -18,28 +20,30 @@ pygame.display.set_caption('Run Tony Run')
 clock = pygame.time.Clock()
 FPS = 60
 
-# player action variables
+# player action variables (how we move)
 move_left = False
 move_right = False
 jump = False
 move_down = False
 
-# define background
-bg = (0,0,0)
+# game variables
+GRAVITY = 1
+
+# define background as black
+BACKGROUND = (0,0,0)
+WHITE = (255, 255, 255)
 
 # keep the background refreshing which hides/clears old sprite instances
 def background():
-    screen.fill(bg)
+    screen.fill(BACKGROUND)
+
+    # makes a line for the floor!
+    pygame.draw.line(screen, WHITE, (0, 750), (SCREEN_WIDTH, 750))
 
 # instance of the player class to be used (test instance)
 player = Player(200, 200, 0.125, 5)
-enemy = Enemy(1500, 300, 0.125, 5)
 
-
-
-
-
-# set the game 
+# set the game with while loop
 game_running = True
 while game_running:
 
@@ -51,20 +55,19 @@ while game_running:
     player.move_character(move_left, move_right, jump, move_down)
 
     # adds the enemy sprite to the window (passes the screen to put the image on the screen)
-    enemy.draw(screen)
 
     for event in pygame.event.get():
         # switches game_running to false and allow user to quit game on closing the window
         if event.type == pygame.QUIT:
             game_running = False
         
-        # key presses by user to control sprite
+        # key presses by user to control sprite / exit game
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 move_right = True
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 move_left = True
-            if event.key == pygame.K_UP or event.key == pygame.K_SPACE or event.key == pygame.K_w:
+            if event.key == pygame.K_SPACE:
                 jump = True
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = True
@@ -77,7 +80,7 @@ while game_running:
                 move_right = False
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 move_left = False
-            if event.key == pygame.K_UP or event.key == pygame.K_SPACE or event.key == pygame.K_w:
+            if event.key == pygame.K_SPACE:
                 jump = False
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = False
