@@ -5,8 +5,14 @@ from game_evironment.map_one import *
 # game variable 
 GRAVITY = 1
 
+# player action variables (how we move)
+move_left = False
+move_right = False
+move_down = False
+jump = False
+
 # player class to create the player sprite
-class Player(pygame.sprite.Sprite):
+class TestPlayer(pygame.sprite.Sprite):
     def __init__(self, x, y, scale, speed):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
@@ -34,7 +40,7 @@ class Player(pygame.sprite.Sprite):
         
         # have character jump
         if jump and not self.jump:
-            self.y_velo = -17
+            self.y_velo = -15
             self.jump = True
 
         if move_down:
@@ -49,7 +55,7 @@ class Player(pygame.sprite.Sprite):
 
         # move the changing y position of the sprite based on the velo movement
         dy += self.y_velo
-
+        
         for tile in map_one_map.tile_list:
             # x value is check for horizontal collision
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
@@ -69,11 +75,13 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += dx
         self.rect.y += dy
 
-         # put in game over death here
+        # put in game over death here
         # if self.rect.bottom > SCREEN_HEIGHT:
         #     self.rect.bottom = SCREEN_HEIGHT
         #     dy = 0
 
+
     # add player to screen
     def draw(self, screen):
         screen.blit(self.sprite, self.rect)
+        # pygame.draw.rect(screen, (155, 0 , 0), self.rect, 2)

@@ -32,13 +32,13 @@ class World():
             screen.blit(tile[0], tile[1])
 
 # draw the map grid
-def draw_grid():
-    # vertical lines
-    for column in range(MAXIMUM_COLUMNS + 1):
-        pygame.draw.line(screen, WHITE, (column * TILES, 0), (column * TILES, SCREEN_HEIGHT))
-    # horizontal lines
-    for row in range(ROWS + 1):
-        pygame.draw.line(screen, WHITE, (0, row * TILES), (SCREEN_WIDTH, row * TILES))
+# def draw_grid():
+#     # vertical lines
+#     for column in range(MAXIMUM_COLUMNS + 1):
+#         pygame.draw.line(screen, WHITE, (column * TILES, 0), (column * TILES, SCREEN_HEIGHT))
+#     # horizontal lines
+#     for row in range(ROWS + 1):
+#         pygame.draw.line(screen, WHITE, (0, row * TILES), (SCREEN_WIDTH, row * TILES))
 
 # list for populating world tiles
 map_one_data = [
@@ -53,7 +53,7 @@ map_one_data = [
     [1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
 ]
 
 map_one_map = World(map_one_data)
