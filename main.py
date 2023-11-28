@@ -1,11 +1,12 @@
 # import pygame module
 import pygame
+
+#import the game window
 from game_evironment.game_window import *
 
 # import character / enemy class
 from characters.player import *
 from characters.enemy import *
-from characters.test_player import *
 
 # import the map
 from game_evironment.map_one import *
@@ -19,30 +20,21 @@ scroll_right = False
 scroll = 0
 scroll_speed =1
 
-
 # sets game framerate
 clock = pygame.time.Clock()
 FPS = 60
 
-# # player action variables (how we move)
-# move_left = False
-# move_right = False
-# move_down = False
-# jump = False
-
 # instance of the player class to be used (test instance)
-player = TestPlayer(200, 200, 0.1, 5)
+player = Player(200, 200, 0.1, 5)
 
 # set the game with while loops
 game_running = True
 while game_running:
 
     clock.tick(FPS)
-
     draw_background()
-
+    screen.blit(background_gif_frames[frame_index], (0, 0))
     # draw_grid()
-
     map_one_map.draw()
 
     # adds the player sprite to the window (passes the screen to put the image on the screen)
@@ -83,5 +75,6 @@ while game_running:
     # updates window with all functions (aka displays images / characters)
     pygame.display.update()
 
+    frame_index = (frame_index + 1) % len(background_gif_frames)
 
 pygame.quit()

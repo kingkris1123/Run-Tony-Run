@@ -5,6 +5,12 @@ from game_evironment.map_one import *
 # game variable 
 GRAVITY = 1
 
+# player action variables (how we move)
+move_left = False
+move_right = False
+move_down = False
+jump = False
+
 # player class to create the player sprite
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, scale, speed):
