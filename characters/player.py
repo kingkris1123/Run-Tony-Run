@@ -1,6 +1,6 @@
 import pygame
 
-from game_evironment.map_one import *
+from game_evironment.game_map import *
 
 # game variable 
 GRAVITY = 1
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = speed
         self.y_velo = 0
         self.jump = False
-        sprite = pygame.image.load('./blastoise.png')
+        sprite = pygame.image.load('visual_assets/character_sprites/blastoise.png')
         self.sprite = pygame.transform.scale(sprite, (int(sprite.get_width() * scale), int(sprite.get_height() * scale)))
         self.rect = self.sprite.get_rect()
         self.width = self.sprite.get_width()
@@ -74,11 +74,6 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.x += dx
         self.rect.y += dy
-
-         # put in game over death here
-        # if self.rect.bottom > SCREEN_HEIGHT:
-        #     self.rect.bottom = SCREEN_HEIGHT
-        #     dy = 0
 
     # add player to screen
     def draw(self, screen):
