@@ -9,6 +9,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
         self.y_velo = 0
+        self.jump = False
         sprite = pygame.image.load('./blastoise.png')
         self.sprite = pygame.transform.scale(sprite, (int(sprite.get_width() * scale), int(sprite.get_height() * scale)))
         self.rect = self.sprite.get_rect()
@@ -28,9 +29,9 @@ class Player(pygame.sprite.Sprite):
             dx = +self.speed
         
         # have character jump
-        if jump:
-            self.y_velo = -11
-            self.jump = False
+        if jump and not self.jump:
+            self.y_velo = -20
+            self.jump = True
 
         if move_down:
             dy = +self.speed
@@ -49,6 +50,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom + dy > 750:
             # difference between bottom of character and floor (900)
             dy = 750 - self.rect.bottom
+            self.jump = False
 
         self.rect.x += dx
         self.rect.y += dy
