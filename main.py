@@ -5,6 +5,7 @@ from game_evironment.game_window import *
 # import character / enemy class
 from characters.player import *
 from characters.enemy import *
+from characters.test_player import *
 
 # import the map
 from game_evironment.map_one import *
@@ -23,14 +24,14 @@ scroll_speed =1
 clock = pygame.time.Clock()
 FPS = 60
 
-# player action variables (how we move)
-move_left = False
-move_right = False
-move_down = False
-jump = False
+# # player action variables (how we move)
+# move_left = False
+# move_right = False
+# move_down = False
+# jump = False
 
 # instance of the player class to be used (test instance)
-player = Player(200, 200, 0.125, 5)
+player = TestPlayer(200, 200, 0.1, 5)
 
 # set the game with while loops
 game_running = True
@@ -40,7 +41,7 @@ while game_running:
 
     draw_background()
 
-    draw_grid()
+    # draw_grid()
 
     map_one_map.draw()
 
