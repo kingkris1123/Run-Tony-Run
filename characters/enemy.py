@@ -2,9 +2,9 @@ import pygame
 
 # player class to create the player sprite
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self,char_type, x, y, scale, speed):
+    def __init__(self, x, y, scale, speed):
         pygame.sprite.Sprite.__init__(self)
-        self.char_type = char_type
+       
         self.speed = speed
         self.direction = 1 
         self.flip = False

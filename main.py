@@ -6,6 +6,9 @@ from game_evironment.game_window import *
 from characters.player import *
 from characters.enemy import *
 
+# import icons / bullet class
+from icons.bullet import * 
+
 # import the map
 from game_evironment.map_one import *
 
@@ -23,15 +26,28 @@ scroll_speed =1
 clock = pygame.time.Clock()
 FPS = 60
 
+
+
+#create sprite and update  groups 
+bullet_group = pygame.sprite.Group()
+
+
+
 # player action variables (how we move)
 move_left = False
 move_right = False
 move_down = False
 jump = False
+shoot = False
+
 
 # instance of the player class to be used (test instance)
 player = Player(200, 200, 0.125, 5)
 enemy = Enemy (200, 200, 0.125, 5)
+
+
+
+bullet = Bullet(player.rect.centerx + (0.6 * player.rect.size[0] * player.direction) , player.rect.centery,player.direction)
 
 # set the game with while loops
 game_running = True
@@ -53,6 +69,13 @@ while game_running:
     enemy.draw(screen)
     enemy.move_character(move_left, move_right, jump, move_down)
 
+    # update and draw groups 
+    bullet_group.update()
+    bullet_group.draw(screen)
+
+ 
+
+
     for event in pygame.event.get():
         # switches game_running to false and allow user to quit game on closing the window
         if event.type == pygame.QUIT:
@@ -66,6 +89,8 @@ while game_running:
                 move_left = True
             if event.key == pygame.K_SPACE:
                 jump = True
+            if event.key == pygame.K_LSHIFT:
+                shoot = True
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = True
             if event.key == pygame.K_ESCAPE:
@@ -79,6 +104,8 @@ while game_running:
                 move_left = False
             if event.key == pygame.K_SPACE:
                 jump = False
+            if event.key == pygame.K_LSHIFT:
+                shoot = False
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = False
 

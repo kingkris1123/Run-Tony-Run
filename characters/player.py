@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.sprite = pygame.transform.scale(sprite, (int(sprite.get_width() * scale), int(sprite.get_height() * scale)))
         self.rect = self.sprite.get_rect()
         self.rect.center = (x,y)
+        self.shoot_cooldown = 0 
 
     #assigns movement variables
     def move_character (self, move_left, move_right, jump, move_down):
@@ -60,6 +61,12 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.x += dx
         self.rect.y += dy
+
+        def shoot(self):
+            if self.shoot_cooldown == 0:
+                self.shoot_cooldown = 20 
+            bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * self.direction) , self.rect.centery,self.direction)
+            bullet_group.add(bullet)
 
 
     # add player to screen
