@@ -31,6 +31,7 @@ jump = False
 
 # instance of the player class to be used (test instance)
 player = Player(200, 200, 0.125, 5)
+enemy = Enemy (200, 200, 0.125, 5)
 
 # set the game with while loops
 game_running = True
@@ -49,6 +50,8 @@ while game_running:
     player.move_character(move_left, move_right, jump, move_down)
 
     # adds the enemy sprite to the window (passes the screen to put the image on the screen)
+    enemy.draw(screen)
+    enemy.move_character(move_left, move_right, jump, move_down)
 
     for event in pygame.event.get():
         # switches game_running to false and allow user to quit game on closing the window

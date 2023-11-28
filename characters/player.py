@@ -8,6 +8,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, scale, speed):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
+        self.direction = 1 
+        self.flip = False
         self.y_velo = 0
         self.jump = False
         sprite = pygame.image.load('./blastoise.png')
@@ -25,8 +27,12 @@ class Player(pygame.sprite.Sprite):
         # move character left/right
         if move_left:
             dx = -self.speed
+            self.flip = True
+            self.direction = -1
         if move_right:
             dx = +self.speed
+            self.flip = False
+            self.direction = 1
         
         # have character jump
         if jump and not self.jump:
@@ -58,4 +64,4 @@ class Player(pygame.sprite.Sprite):
 
     # add player to screen
     def draw(self, screen):
-        screen.blit(self.sprite, self.rect)
+        screen.blit(pygame.transform.flip(self.sprite, self.flip, False), self.rect)

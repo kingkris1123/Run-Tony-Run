@@ -2,8 +2,12 @@ import pygame
 
 # player class to create the player sprite
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y, scale, speed):
+    def __init__(self,char_type, x, y, scale, speed):
         pygame.sprite.Sprite.__init__(self)
+        self.char_type = char_type
+        self.speed = speed
+        self.direction = 1 
+        self.flip = False
         sprite = pygame.image.load('./blastoise.png')
         self.sprite = pygame.transform.scale(sprite, (int(sprite.get_width() * scale), int(sprite.get_height() * scale)))
         self.rect = self.sprite.get_rect()
@@ -18,9 +22,15 @@ class Enemy(pygame.sprite.Sprite):
 
         if move_left:
             dx = -self.speed
+            self.flip = True
+            self.direction = -1
+
 
         if move_right:
             dx = +self.speed
+            self.flip = False
+            self.direction = 1
+
 
         if jump:
             dy = -self.speed
@@ -32,4 +42,4 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y += dy
 
     def draw(self, screen):
-        screen.blit(self.sprite, self.rect)
+        screen.blit(pygame.transform.flip(self.sprite, self.flip, False), self.rect)
