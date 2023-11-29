@@ -1,6 +1,7 @@
 import pygame
 
 from game_evironment.game_map import *
+from shooting_gameplay.bullet import *
 
 # game variable 
 GRAVITY = 1
@@ -94,14 +95,14 @@ class Player(pygame.sprite.Sprite):
         bullet_group.add(bullet)
         self.ammo -= 1
         
-    # def check_alive(self):
-    #     if self.health <= 0:
-    #         self.health = 0
-    #         self.speed = 0
-    #         self.alive = False
+    def check_alive(self):
+        if self.health <= 0:
+            self.health = 0
+            self.speed = 0
+            self.alive = False
     
-    # def update(self):
-    #     self.check_alive()
+    def update(self):
+        self.check_alive()
 
     # add player to screen
     def draw(self, screen):
