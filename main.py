@@ -4,12 +4,15 @@ import pygame
 #import the game window
 from game_evironment.game_window import *
 
+# import the map
+from game_evironment.game_map import *
+
 # import character / enemy class
 from characters.player import *
 from characters.enemy import *
 
-# import the map
-from game_evironment.game_map import *
+# import bullet class
+from shooting_gameplay.bullet import *
 
 # initialize the pygame window
 pygame.init()
@@ -28,7 +31,7 @@ FPS = 60
 camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # player instance
-player = Player(25, 500, 0.1, 5)
+player = Player(25, 500, 0.1, 5, 10)
 
 # state of game over (prompts the game over screen)
 game_over = False
@@ -46,13 +49,13 @@ while game_running:
 
         # adds the player sprite to the window (passes the screen to put the image on the screen)
         # player.draw(screen)
-        # player.update()
+        player.update()
 
         # player movement
         player.move_character(move_left, move_right, jump, move_down)
 
         # update the camera based on the player
-        camera.update(player)
+        # camera.update(player)
 
         # draws elements based on camera view
         for tile in map_one_map.tile_list:
@@ -69,8 +72,9 @@ while game_running:
 
         if player.alive:
             if shoot:
-                bullet = Bullet(player.rect.centerx + (0.6 * player.rect.size[0] * player.direction), player.rect.centery, player.direction)
-        
+                bullet = Bullet(player.rect.center[0] + (player.rect.size[0] * player.direction), player.rect.center[1], player.direction)
+                bullet_group.add(bullet)
+
         # update the display for the gameplay
         pygame.display.update()
             
@@ -85,7 +89,7 @@ while game_running:
                 pygame.quit()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
-                    player = Player(25, 500, 0.1, 5)  # Reset player
+                    player = Player(25, 500, 0.1, 5, 10)  # Reset player
                     game_over = False  # Reset game_over flag
 
 
