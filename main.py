@@ -33,6 +33,9 @@ camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 # player instance
 player = Player(25, 500, 1.5, 5, 10)
 
+# start
+start_game = True
+
 # state of game over (prompts the game over screen)
 game_over = False
 game_running = True
@@ -40,6 +43,9 @@ game_running = True
 # set the game with while loop
 while game_running:
     
+    if start_game:
+        pass
+
     if not game_over:
         clock.tick(FPS)
 
@@ -94,7 +100,7 @@ while game_running:
                     game_keys = pygame.key.get_pressed()
                     if not any(game_keys):
                         player = Player(25, 500, 1.5, 5, 10)  # Reset player
-                    
+
                         game_over = False  # Reset game_over flag
 
 
