@@ -14,6 +14,9 @@ from characters.enemy import *
 # import bullet class
 from shooting_gameplay.bullet import *
 
+# import health bar class 
+from shooting_gameplay.health_bar import *
+
 # initialize the pygame window
 pygame.init()
 
@@ -32,6 +35,8 @@ camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # player instance
 player = Player(25, 500, 1.5, 5, 10)
+
+health_bar = HealthBar(250,200,300,40,100)
 
 # start
 start_game = True
@@ -55,6 +60,7 @@ while game_running:
 
         # draw player onto screen
         # player.draw(screen)
+         player.update()
 
         # player movement
         player.move_character(move_left, move_right, jump, move_down)
@@ -158,7 +164,8 @@ while game_running:
             # to be used in future (duck feature)
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = False
-
+        #draw health bar 
+        health_bar.draw(screen)
         # updates window with all functions (aka displays images / characters)
         # pygame.display.update()
 
