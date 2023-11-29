@@ -28,8 +28,7 @@ FPS = 60
 
 
 
-#create sprite and update  groups 
-bullet_group = pygame.sprite.Group()
+
 
 
 
@@ -42,12 +41,13 @@ shoot = False
 
 
 # instance of the player class to be used (test instance)
-player = Player(200, 200, 0.125, 5)
-enemy = Enemy (200, 200, 0.125, 5)
+player = Player(200, 200, 0.125, 5,20)
+enemy = Enemy (200, 200, 0.125, 5,)
 
 
 
-bullet = Bullet(player.rect.centerx + (0.6 * player.rect.size[0] * player.direction) , player.rect.centery,player.direction)
+
+
 
 # set the game with while loops
 game_running = True
@@ -61,7 +61,10 @@ while game_running:
 
     map_one_map.draw()
 
+
+
     # adds the player sprite to the window (passes the screen to put the image on the screen)
+    player.update()
     player.draw(screen)
     player.move_character(move_left, move_right, jump, move_down)
 
@@ -72,6 +75,12 @@ while game_running:
     # update and draw groups 
     bullet_group.update()
     bullet_group.draw(screen)
+
+    if player.alive:
+        #shoot bullets
+        if shoot:
+            bullet = Bullet(player.rect.centerx + (0.6 * player.rect.size[0] * player.direction) , player.rect.centery,player.direction)
+            bullet_group.add(bullet)
 
  
 

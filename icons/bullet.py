@@ -1,10 +1,14 @@
 import pygame
 from game_evironment.game_window import *
+from characters.player import *
 
 
 #load images 
 # bullet 
 bullet_img = pygame.image.load('./bullet.png')
+
+#create sprite and update  groups 
+bullet_group = pygame.sprite.Group()
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -21,3 +25,8 @@ class Bullet(pygame.sprite.Sprite):
         # check if bullet has gone off screen 
         if self.rect.right < 0 or self.rect.left > SCREEN_WIDTH - 100:
             self.kill
+
+
+
+        
+     
