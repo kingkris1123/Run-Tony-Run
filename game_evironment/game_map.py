@@ -45,9 +45,10 @@ class Map():
                 column_number += 1
             row_number += 1
         
-    def draw (self):
+    def draw (self, screen):
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
+            pygame.draw.rect(screen, (155, 0, 0), tile[1], 2)
 
 class Camera():
     def __init__(self, width, height):
@@ -55,14 +56,19 @@ class Camera():
         self.width = width
         self.height = height
     
-    def apply_camera(self, entity):
+    def apply_camera(self, entity, player):
+        initial_shift = max(0, player.rect.x - SCREEN_WIDTH // 2)
+        screen_tuple = (self.camera.topleft[0] - initial_shift, self.camera.topleft[1])
+        return entity.move(screen_tuple)
+
         # gives a new rectangle based on the shift given as an argument
-        return entity.move(self.camera.topleft)
+        # screen_tuple = (self.camera.topleft[0] - (SCREEN_WIDTH * 0.5), self.camera.topleft[1])
+        # return entity.move(screen_tuple)
     
     # follows the sprite and shifts camera accordingly
-    def update (self, target):
-        x = -target.rect.x + int(SCREEN_WIDTH / 2)
-        # y = -target.rect.y + int(SCREEN_HEIGHT / 2)
-        self.camera = pygame.Rect(x, 0, self.width, self.height)
+    def update (self, player):
+        if player.rect.x >= SCREEN_WIDTH // 2:
+            x = player.rect.x - int(SCREEN_WIDTH // 2)
+            self.camera = pygame.Rect(x, 0, self.width, self.height)
 
 map_one_map = Map(map_one_data)
