@@ -15,7 +15,7 @@ from characters.enemy import *
 from shooting_gameplay.bullet import *
 
 #import health bar class 
-from shooting_gameplay.health_bar import *
+#from shooting_gameplay.health_bar import *
 
 # initialize the pygame window
 pygame.init()
@@ -36,7 +36,7 @@ camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 # player instance
 player = Player(25, 500, 1.5, 5, 10)
 
-health_bar = HealthBar(300,40,100)
+#health_bar = HealthBar(300,40,100)
 
 # state of game over (prompts the game over screen)
 game_over = False
