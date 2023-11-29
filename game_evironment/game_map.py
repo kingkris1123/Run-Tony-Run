@@ -56,19 +56,19 @@ class Camera():
         self.width = width
         self.height = height
     
+    # applies the camera to an entity and displays map based on position
     def apply_camera(self, entity, player):
         initial_shift = max(0, player.rect.x - SCREEN_WIDTH // 2)
         screen_tuple = (self.camera.topleft[0] - initial_shift, self.camera.topleft[1])
         return entity.move(screen_tuple)
-
-        # gives a new rectangle based on the shift given as an argument
-        # screen_tuple = (self.camera.topleft[0] - (SCREEN_WIDTH * 0.5), self.camera.topleft[1])
-        # return entity.move(screen_tuple)
     
     # follows the sprite and shifts camera accordingly
     def update (self, player):
         if player.rect.x >= SCREEN_WIDTH // 2:
             x = player.rect.x - int(SCREEN_WIDTH // 2)
             self.camera = pygame.Rect(x, 0, self.width, self.height)
+    
+    def reset(self):
+        self.camera = pygame.Rect(0, 0, self.width, self.height)
 
 map_one_map = Map(map_one_data)

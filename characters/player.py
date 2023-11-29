@@ -112,8 +112,6 @@ class Player(pygame.sprite.Sprite):
         for tile in map_one_map.tile_list:
             # x value is check for horizontal collision
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                print(f'tile {tile[1]}')
-                print(f'player {self.rect}')
                 dx = 0
 
             # y value is check for any vertical collision
@@ -143,8 +141,8 @@ class Player(pygame.sprite.Sprite):
     #         self.speed = 0
     #         self.alive = False
     
-    def update(self):
-        self.check_alive()
+    # def update(self):
+    #     self.check_alive()
 
     # add player to screen
     def draw(self, screen):
