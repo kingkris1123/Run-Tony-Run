@@ -143,8 +143,8 @@ class Player(pygame.sprite.Sprite):
     #         self.speed = 0
     #         self.alive = False
     
-    def update(self):
-        self.check_alive()
+    # def update(self):
+    #     self.check_alive()
 
     # add player to screen
     def draw(self, screen):

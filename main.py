@@ -14,8 +14,8 @@ from characters.enemy import *
 # import bullet class
 from shooting_gameplay.bullet import *
 
-# import health bar class 
-from shooting_gameplay.health_bar import *
+#import health bar class 
+#from shooting_gameplay.health_bar import *
 
 # initialize the pygame window
 pygame.init()
@@ -36,11 +36,14 @@ camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 # player instance
 player = Player(25, 500, 1.5, 5, 10)
 
-health_bar = HealthBar(250,200,300,40,100)
+#health_bar = HealthBar(300,40,100)
 
 # state of game over (prompts the game over screen)
 game_over = False
 game_running = True
+
+# score 
+score = 0 
 
 # set the game with while loop
 while game_running:
@@ -52,9 +55,17 @@ while game_running:
         screen.blit(background_gif_frames[frame_index], (0, 0))
         frame_index = (frame_index + 1) % len(background_gif_frames)
 
+        #draw health bar 
+        health_bar.draw(screen)
+       
+        #score 
+        font = pygame.font.Font(None, 36)
+        score_text = font.render("Score: {}".format(score), True, 'white')
+        screen.blit(score_text, (10, 10))
+        
         # draw player onto screen
         # player.draw(screen)
-         player.update()
+        player.update()
 
         # player movement
         player.move_character(move_left, move_right, jump, move_down)
@@ -159,7 +170,7 @@ while game_running:
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = False
         #draw health bar 
-        health_bar.draw(screen)
+        #health_bar.draw(screen)
         # updates window with all functions (aka displays images / characters)
         # pygame.display.update()
 
