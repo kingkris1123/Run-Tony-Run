@@ -31,7 +31,7 @@ FPS = 60
 camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # player instance
-player = Player(25, 500, 0.1, 5, 10)
+player = Player(25, 500, 1.5, 5, 10)
 
 # state of game over (prompts the game over screen)
 game_over = False
@@ -43,37 +43,39 @@ while game_running:
     if not game_over:
         clock.tick(FPS)
 
-        # draw_background()
+        # background gif image
         screen.blit(background_gif_frames[frame_index], (0, 0))
         frame_index = (frame_index + 1) % len(background_gif_frames)
 
-        # adds the player sprite to the window (passes the screen to put the image on the screen)
+        # draw player onto screen
         # player.draw(screen)
-        player.update()
 
         # player movement
         player.move_character(move_left, move_right, jump, move_down)
 
+
         # update the camera based on the player
-        # camera.update(player)
+        camera.update(player)
 
         # draws elements based on camera view
         for tile in map_one_map.tile_list:
-            screen.blit(tile[0], camera.apply_camera(tile[1]))
+            screen.blit(tile[0], (tile[1][0] - camera.camera.topleft[0], tile[1][1]))
 
-        screen.blit(player.sprite, camera.apply_camera(player.rect))
+        #character to the camera
+        player_surface = player.draw(screen)
+        screen.blit(player_surface, (player.rect.x - camera.camera.topleft[0], player.rect.y))
 
         # put in game over death here
         if int(player.rect.top + 10) > SCREEN_HEIGHT:
             game_over = True
 
-        bullet_group.update()
-        bullet_group.draw(screen)
+        # if player.alive:
+        # if shoot:
+        #     bullet = Bullet(0.6 * player.rect.centerx + (player.rect.size[0] * player.direction), player.rect.centery, player.direction)
+        #     bullet_group.add(bullet)
 
-        if player.alive:
-            if shoot:
-                bullet = Bullet(player.rect.center[0] + (player.rect.size[0] * player.direction), player.rect.center[1], player.direction)
-                bullet_group.add(bullet)
+        # bullet_group.update()
+        # bullet_group.draw(screen)
 
         # update the display for the gameplay
         pygame.display.update()
@@ -89,8 +91,11 @@ while game_running:
                 pygame.quit()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
-                    player = Player(25, 500, 0.1, 5, 10)  # Reset player
-                    game_over = False  # Reset game_over flag
+                    game_keys = pygame.key.get_pressed()
+                    if not any(game_keys):
+                        player = Player(25, 500, 1.5, 5, 10)  # Reset player
+                    
+                        game_over = False  # Reset game_over flag
 
 
     for event in pygame.event.get():
@@ -108,14 +113,16 @@ while game_running:
             # player movement controls
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 move_right = True
+                Player.player_direction = 'right'
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 move_left = True
+                Player.player_direction = 'left'
             if event.key == pygame.K_SPACE:
                 jump = True
 
             # shoot bullets
-            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
-                shoot = True
+            # if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+            #     shoot = True
 
             # to be used in future (duck feature)  
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
@@ -131,22 +138,22 @@ while game_running:
             # player movement control end
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 move_right = False
+                Player.player_direction = 'idle'
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 move_left = False
+                Player.player_direction = 'idle'
             if event.key == pygame.K_SPACE:
                 jump = False
 
             # stop shooting bullets
-            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
-                shoot = False
+            # if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+            #     shoot = False
 
             # to be used in future (duck feature)
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = False
 
-        
-            
-
         # updates window with all functions (aka displays images / characters)
         # pygame.display.update()
+
 pygame.quit()
