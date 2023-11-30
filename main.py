@@ -14,8 +14,8 @@ from characters.enemy import *
 # import bullet class
 from shooting_gameplay.bullet import *
 
-#import health bar class 
-#from shooting_gameplay.health_bar import *
+# import health bar class 
+from shooting_gameplay.health_bar import *
 
 # initialize the pygame window
 pygame.init()
@@ -48,6 +48,9 @@ score = 0
 # set the game with while loop
 while game_running:
     
+    if start_game:
+        pass
+
     if not game_over:
         clock.tick(FPS)
 
@@ -70,7 +73,6 @@ while game_running:
         # player movement
         player.move_character(move_left, move_right, jump, move_down)
 
-
         # update the camera based on the player
         camera.update(player)
 
@@ -78,7 +80,7 @@ while game_running:
         for tile in map_one_map.tile_list:
             screen.blit(tile[0], (tile[1][0] - camera.camera.topleft[0], tile[1][1]))
 
-        #character to the camera
+        # draw character to the camera
         player_surface = player.draw(screen)
         screen.blit(player_surface, (player.rect.x - camera.camera.topleft[0], player.rect.y))
 
@@ -106,13 +108,23 @@ while game_running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            if event.type == pygame.KEYUP:
+
+            game_keys = pygame.key.get_pressed()
+
+            if not any(game_keys):
                 if event.key == pygame.K_SPACE:
-                    game_keys = pygame.key.get_pressed()
-                    if not any(game_keys):
-                        player = Player(25, 500, 1.5, 5, 10)  # Reset player
                     
-                        game_over = False  # Reset game_over flag
+                    # reset all key event values so player isn't affected on init below
+                    pygame.event.clear()
+
+                    # reset player instance
+                    player = Player(25, 500, 1.5, 5, 10)
+
+                    # reset camera positioning
+                    camera.reset()
+
+                    # reset game_over variable
+                    game_over = False
 
 
     for event in pygame.event.get():
@@ -169,8 +181,9 @@ while game_running:
             # to be used in future (duck feature)
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 move_down = False
+            
         #draw health bar 
-        #health_bar.draw(screen)
+        # health_bar.draw(screen)
         # updates window with all functions (aka displays images / characters)
         # pygame.display.update()
 
