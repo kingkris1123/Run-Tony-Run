@@ -1,6 +1,7 @@
 import pygame
 
 from game_evironment.game_map import *
+from game_evironment.game_window import *
 from shooting_gameplay.bullet import *
 
 # game variable 
@@ -62,6 +63,16 @@ animations = {
     'jump_left': jump_left_frames
 }
 
+move_on = 0
+current_map = None
+
+if move_on < len(Map.all):
+    current_map = Map.all[move_on]
+
+elif move_on > len(Map.all):
+    move_on = 0
+    current_map = Map.all[move_on]
+
 # player class to create the player sprite
 class Player(pygame.sprite.Sprite):
     player_direction = 'idle_right'
@@ -86,6 +97,7 @@ class Player(pygame.sprite.Sprite):
         self.shoot_cooldown = 0
         self.health = 100
         self.max_health = self.health
+        self.score = 0
 
     def __set_sprite(self):
         sprite = animations[Player.player_direction][Player.number_change]
@@ -126,7 +138,8 @@ class Player(pygame.sprite.Sprite):
         # move the changing y position of the sprite based on the velo movement
         dy += self.y_velo
 
-        for tile in map_one_map.tile_list:
+        for tile in current_map.tile_list:
+
             # x value is check for horizontal collision
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                 dx = 0
@@ -142,24 +155,35 @@ class Player(pygame.sprite.Sprite):
                     self.y_velo = 0
                     self.jump = False
 
+################################ DIAMOND ##############################
+
+        for diamond in current_map.temp_diamond_list:
+            if diamond[1].colliderect(self.rect.x + dx, self.rect.y + dy, self.width, self.height):
+                
+                current_map.temp_diamond_list.remove(diamond)
+                self.score += 5
+
+                # portal_collision_occurred = True  # Set flag to True after collision
+
+################################ PORTAL ###############################
+        # portal_collision_occurred = False  # Flag to track collision occurrence
+        # continue_screen_active = None
+        
+        for portal in current_map.temp_portal_list:
+            if portal[1].colliderect(self.rect.x + dx, self.rect.y + dy, self.width, self.height):
+                print('you win')
+                
+                current_map.temp_portal_list.remove(portal)
+
+                # portal_collision_occurred = True  # Set flag to True after collision
+
+                game_over_screen(self.score)
+                # continue_screen_active = True
+
+                pygame.display.update()
+
         self.rect.x += dx
         self.rect.y += dy
-
-    # def shoot(self):
-    #     if self.shoot_cooldown == 0 and self.ammo > 0:
-    #         self.shoot_cooldown = 20
-    #     bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery.self.direction)
-    #     bullet_group.add(bullet)
-    #     self.ammo -= 1
-        
-    # def check_alive(self):
-    #     if self.health <= 0:
-    #         self.health = 0
-    #         self.speed = 0
-    #         self.alive = False
-    
-    # def update(self):
-    #     self.check_alive()
 
     # add player to screen
     def draw(self):
