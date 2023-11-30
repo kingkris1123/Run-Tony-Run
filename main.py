@@ -30,13 +30,14 @@ scroll_speed =1
 clock = pygame.time.Clock()
 FPS = 60
 
-# camera instance
-camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+# # camera instance
+# camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # player instance
 player = Player(25, 500, 1.5, 5, 10)
 
 # health_bar = HealthBar(250,200,300,40,100)
+
 
 # start
 start_game = True
@@ -58,6 +59,10 @@ while game_running:
         screen.blit(background_gif_frames[frame_index], (0, 0))
         frame_index = (frame_index + 1) % len(background_gif_frames)
 
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {player.score}", True, WHITE)
+        screen.blit(score_text, (25, 25))
+
         # update the camera position
         player.update()
 
@@ -68,8 +73,17 @@ while game_running:
         camera.update(player)
 
         # draws elements based on camera view
-        for tile in map_one_map.tile_list:
+        # draws tiles based on camera
+        for tile in current_map.tile_list:
             screen.blit(tile[0], (tile[1][0] - camera.camera.topleft[0], tile[1][1]))
+
+        # draws diamonds based on camera
+        for diamond in current_map.temp_diamond_list:
+            screen.blit(diamond[0], (diamond[1][0] - camera.camera.topleft[0], diamond[1][1]))
+
+        #draws portal based on camera
+        for portal in current_map.temp_portal_list:
+            screen.blit(portal[0], (portal[1][0] - camera.camera.topleft[0], portal[1][1]))
 
         # draw character to the camera
         player_surface = player.draw()
@@ -78,21 +92,16 @@ while game_running:
         # put in game over death here
         if int(player.rect.top + 10) > SCREEN_HEIGHT:
             game_over = True
-            player.kill()
 
-        # if player.alive:
-        # if shoot:
-        #     bullet = Bullet(0.6 * player.rect.centerx + (player.rect.size[0] * player.direction), player.rect.centery, player.direction)
-        #     bullet_group.add(bullet)
-
-        # bullet_group.update()
-        # bullet_group.draw(screen)
+       # detect a collision with the "tunnel object" then increment the variable to the next integer
+        # if player.rect.colliderect("rectangle"):
+        #     current_map += 1
 
         # update the display for the gameplay
         pygame.display.update()
             
     else:
-        game_over_screen()
+        game_over_screen(player.score)
 
         # update the display after showing game over screen
         pygame.display.update()
@@ -115,6 +124,10 @@ while game_running:
 
                 # Reset camera positioning
                 camera.reset()
+
+                # resets temp lists to original values on reset
+                current_map.temp_diamond_list = [*current_map.diamond_list]
+                current_map.temp_portal_list = [*current_map.portal_list]
 
                 # Reset game_over variable
                 game_over = False
