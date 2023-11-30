@@ -15,7 +15,7 @@ from characters.enemy import *
 from shooting_gameplay.bullet import *
 
 # import health bar class 
-# from shooting_gameplay.health_bar import *
+from shooting_gameplay.health_bar import *
 
 # initialize the pygame window
 pygame.init()
@@ -38,7 +38,6 @@ player = Player(25, 500, 1.5, 5, 10)
 
 # health_bar = HealthBar(250,200,300,40,100)
 
-
 # start
 start_game = True
 
@@ -46,11 +45,14 @@ start_game = True
 game_over = False
 game_running = True
 
+# score 
+score = 0 
+
 # set the game with while loop
 while game_running:
     
-    if start_game:
-        pass
+    #if start_game:
+       # pass
 
     if not game_over:
         clock.tick(FPS)
