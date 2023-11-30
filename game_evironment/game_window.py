@@ -16,6 +16,7 @@ SCREEN_HEIGHT = 1000
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Run Tony Run')
 
+# game over sreen, draws over game
 def game_over_screen():
     screen.fill(BLACK)
     
