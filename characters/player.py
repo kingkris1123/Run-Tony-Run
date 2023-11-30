@@ -14,17 +14,20 @@ jump = False
 shoot = False
 
 idle_frame_width = 21
-idle_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_idle.png')
+idle_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_idle.png').convert_alpha()
 
 run_frame_width = 23
-run_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_running.png')
+run_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_running.png').convert_alpha()
+
+jump_frame_width = 17
+jump_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_jump.png').convert_alpha()
 
 idle_width, idle_height = idle_spritesheet.get_size()
 idle_num_frames = int(idle_width / idle_frame_width)
-idle_frames = []
+idle_right_frames = []
 for i in range(idle_num_frames):
     frame = idle_spritesheet.subsurface(pygame.Rect(i * idle_frame_width, 0, idle_frame_width, idle_height))
-    idle_frames.append(frame)
+    idle_right_frames.append(frame)
 
 run_width, run_height = run_spritesheet.get_size()
 run_num_frames = int(run_width / run_frame_width)
@@ -33,21 +36,35 @@ for i in range(run_num_frames):
     frame = run_spritesheet.subsurface(pygame.Rect(i * run_frame_width, 0, run_frame_width, run_height))
     run_right_frames.append(frame)
 
+jump_width, jump_height = jump_spritesheet.get_size()
+jump_num_frames = int(jump_width / jump_frame_width)
+jump_right_frames = []
+for i in range(jump_num_frames):
+    frame = jump_spritesheet.subsurface(pygame.Rect(i * jump_frame_width, 0, jump_frame_width, jump_height))
+    jump_right_frames.append(frame)
+
 
 def invert_surface(surface, flip_horizontal = False, flip_vertical = False):
     return pygame.transform.flip(surface, flip_horizontal, flip_vertical)
 
+idle_left_frames = [invert_surface(surface, flip_horizontal = True) for surface in idle_right_frames]
 run_left_frames = [invert_surface(surface, flip_horizontal = True) for surface in run_right_frames]
+jump_left_frames = [invert_surface(surface, flip_horizontal = True) for surface in jump_right_frames]
 
 animations = {
-    'right': run_right_frames,
-    'left': run_left_frames,
-    'idle': idle_frames
+    'run_right': run_right_frames,
+    'run_left': run_left_frames,
+
+    'idle_right': idle_right_frames,
+    'idle_left': idle_left_frames,
+
+    'jump_right': jump_right_frames,
+    'jump_left': jump_left_frames
 }
 
 # player class to create the player sprite
 class Player(pygame.sprite.Sprite):
-    player_direction = 'idle'
+    player_direction = 'idle_right'
     player_frame_count = 0
     number_change = 0
 
@@ -145,7 +162,7 @@ class Player(pygame.sprite.Sprite):
     #     self.check_alive()
 
     # add player to screen
-    def draw(self, screen):
+    def draw(self):
         Player.player_frame_count += 1
         if Player.player_frame_count >= 8:
             Player.player_frame_count = 0

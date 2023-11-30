@@ -72,12 +72,13 @@ while game_running:
             screen.blit(tile[0], (tile[1][0] - camera.camera.topleft[0], tile[1][1]))
 
         # draw character to the camera
-        player_surface = player.draw(screen)
+        player_surface = player.draw()
         screen.blit(player_surface, (player.rect.x - camera.camera.topleft[0], player.rect.y))
 
         # put in game over death here
         if int(player.rect.top + 10) > SCREEN_HEIGHT:
             game_over = True
+            player.kill()
 
         # if player.alive:
         # if shoot:
@@ -99,23 +100,27 @@ while game_running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-
+                    
             game_keys = pygame.key.get_pressed()
 
-            if not any(game_keys):
-                if event.key == pygame.K_SPACE:
-                    
-                    # reset all key event values so player isn't affected on init below
-                    pygame.event.clear()
+            if any(game_keys) and game_over:
+                if pygame.key.get_mods():
+                    # Reset all key states
+                    pygame.key.set_mods(0)
 
-                    # reset player instance
-                    player = Player(25, 500, 1.5, 5, 10)
+            # Ensure space key restarts the game
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                # Reset player instance
+                player = Player(25, 500, 1.5, 5, 10)
 
-                    # reset camera positioning
-                    camera.reset()
+                # Reset camera positioning
+                camera.reset()
 
-                    # reset game_over variable
-                    game_over = False
+                # Reset game_over variable
+                game_over = False
+
+            # Clear the event queue after checking for new key presses
+            pygame.event.clear()
 
 
     for event in pygame.event.get():
@@ -133,13 +138,17 @@ while game_running:
             # player movement controls
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 move_right = True
-                Player.player_direction = 'right'
+                Player.player_direction = 'run_right'
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 move_left = True
-                Player.player_direction = 'left'
+                Player.player_direction = 'run_left'
             if event.key == pygame.K_SPACE:
                 jump = True
-
+                # if Player.player_direction == 'run_right' or Player.player_direction == 'idle_right':
+                #     Player.player_direction = "jump_right"
+                # else:
+                #     Player.player_direction = "jump_left"
+                
             # shoot bullets
             # if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
             #     shoot = True
@@ -158,10 +167,10 @@ while game_running:
             # player movement control end
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 move_right = False
-                Player.player_direction = 'idle'
+                Player.player_direction = 'idle_right'
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 move_left = False
-                Player.player_direction = 'idle'
+                Player.player_direction = 'idle_left'
             if event.key == pygame.K_SPACE:
                 jump = False
 
