@@ -31,6 +31,7 @@ TILES = SCREEN_HEIGHT // ROWS
 dirt_base = pygame.image.load('visual_assets/environment_tiles/ground5.png')
 portal_img = pygame.image.load('visual_assets/environment_tiles/portal_image.png')
 diamond_img = pygame.image.load('visual_assets/environment_tiles/diamond.png')
+end_sign = pygame.image.load('visual_assets/environment_tiles/end_sign.png')
 
 ## reads through the game map data and populates the appropriate tiles with numerical code
 class Map():
@@ -83,7 +84,7 @@ class Map():
                     self.portal_list.append(tile)
                     self.temp_portal_list = [*self.portal_list]
                 if tile == 4:
-                    image = pygame.transform.scale(portal_img, (TILES, TILES))
+                    image = pygame.transform.scale(end_sign, (TILES, TILES))
                     image_box = image.get_rect()
                     image_box.x = column_number * TILES
                     image_box.y = row_number * TILES
