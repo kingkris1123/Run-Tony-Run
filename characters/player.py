@@ -167,20 +167,35 @@ class Player(pygame.sprite.Sprite):
 
 ################################ PORTAL ###############################
         # portal_collision_occurred = False  # Flag to track collision occurrence
-        # continue_screen_active = None
-        
+        continue_screen_active = False
+
         for portal in current_map.temp_portal_list:
-            if portal[1].colliderect(self.rect.x + dx, self.rect.y + dy, self.width, self.height):
-                print('you win')
-                
-                current_map.temp_portal_list.remove(portal)
+            if not continue_screen_active:
+                if portal[1].colliderect(self.rect.x + dx, self.rect.y + dy, self.width, self.height):
+                    print('you win')
+                    current_map.temp_portal_list.remove(portal)
+                    
+                    continue_screen_active = True
+                    continue_screen(self.score)
+                    pygame.display.update()
 
-                # portal_collision_occurred = True  # Set flag to True after collision
+                    # Change the map upon portal collision
+                    # I CAN'T FUCKING FIGURE IT OUT
 
-                game_over_screen(self.score)
-                # continue_screen_active = True
+        # Wait for space bar press to continue
+        while continue_screen_active:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    # Exit the loop when space bar is pressed
+                    continue_screen_active = False
+                    
+                    self.rect.x = 25
+                    self.rect.y = 500
 
-                pygame.display.update()
+                    current_map.temp_diamond_list = [*current_map.diamond_list]
+                    current_map.temp_portal_list = [*current_map.portal_list]
+
+                    camera.reset()
 
         self.rect.x += dx
         self.rect.y += dy
