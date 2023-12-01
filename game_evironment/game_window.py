@@ -65,7 +65,7 @@ def game_over_screen(score=0):
     title_score = score_text.render(f'Score: {score}', True, WHITE)
     
     button_text = pygame.font.SysFont('Courier', 40)
-    button = button_text.render('Hit [space] to Play Again?', True, WHITE)
+    button = button_text.render('Press [space] to Return to Start', True, WHITE)
 
     # sets the game over title to the middle of the screen (divide by two for width and height of screen)
     screen.blit(title, (SCREEN_WIDTH/2 - title.get_width()/2, SCREEN_HEIGHT/2.75 - title.get_height()/3))
@@ -82,7 +82,7 @@ def continue_screen(score=0):
     title_score = score_text.render(f'Current Score: {score}', True, WHITE)
     
     button_text = pygame.font.SysFont('Courier', 40)
-    button = button_text.render('Hit [space] to Continue', True, WHITE)
+    button = button_text.render('Press [space] to Continue', True, WHITE)
 
     # sets the game over title to the middle of the screen (divide by two for width and height of screen)
     screen.blit(title, (SCREEN_WIDTH/2 - title.get_width()/2, SCREEN_HEIGHT/2.75 - title.get_height()/3))
@@ -99,7 +99,7 @@ def win_screen(score=0):
     title_score = score_text.render(f'Total Score: {score}', True, WHITE)
     
     button_text = pygame.font.SysFont('Courier', 36)
-    button = button_text.render('Hit [space] to Restart', True, WHITE)
+    button = button_text.render('Press [space] to Restart Run', True, WHITE)
 
     # sets the game over title to the middle of the screen (divide by two for width and height of screen)
     screen.blit(title, (SCREEN_WIDTH/2 - title.get_width()/2, SCREEN_HEIGHT/3 - title.get_height()/3))
