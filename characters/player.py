@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 from game_evironment.game_map import *
 from game_evironment.game_window import *
@@ -14,6 +15,7 @@ move_down = False
 jump = False
 shoot = False
 
+## spritesheets for player character
 idle_frame_width = 21
 idle_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_idle.png').convert_alpha()
 
@@ -23,6 +25,7 @@ run_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_runnin
 jump_frame_width = 17
 jump_spritesheet = pygame.image.load('visual_assets/character_sprites/hero_jump.png').convert_alpha()
 
+## animations throught the sprites sheet for each condition
 idle_width, idle_height = idle_spritesheet.get_size()
 idle_num_frames = int(idle_width / idle_frame_width)
 idle_right_frames = []
@@ -63,6 +66,23 @@ animations = {
     'jump_left': jump_left_frames
 }
 
+# player sound effects for gameplay
+mixer.init()
+jump_se = mixer.Sound('visual_assets/grunt_effect.mp3')
+jump_se.set_volume(.175)
+
+diamond_se = mixer.Sound('visual_assets/diamond_se.wav')
+diamond_se.set_volume(.175)
+
+def mute_effects():
+    if jump_se.get_volume() or diamond_se.get_volume() > 0:
+        jump_se.set_volume(0)
+        diamond_se.set_volume(0)
+    else:
+        jump_se.set_volume(.175)
+        diamond_se.set_volume(.175)
+
+## doesn't truly function
 move_on = 0
 current_map = None
 
@@ -124,6 +144,7 @@ class Player(pygame.sprite.Sprite):
         if jump and not self.jump:
             self.y_velo = -17
             self.jump = True
+            jump_se.play()
 
         if move_down:
             dy = +self.speed
@@ -137,6 +158,9 @@ class Player(pygame.sprite.Sprite):
 
         # move the changing y position of the sprite based on the velo movement
         dy += self.y_velo
+
+######## EVERYTHING BELOW USES THE CURRENT_MAP VARIABLE FOR CHECKING GAME MATRIX
+################################ TILE ##############################
 
         for tile in current_map.tile_list:
 
@@ -163,18 +187,24 @@ class Player(pygame.sprite.Sprite):
                 current_map.temp_diamond_list.remove(diamond)
                 self.score += 5
 
+                diamond_se.play()
+
                 # portal_collision_occurred = True  # Set flag to True after collision
 
 ################################ PORTAL ###############################
+
         # portal_collision_occurred = False  # Flag to track collision occurrence
         continue_screen_active = False
 
         for portal in current_map.temp_portal_list:
             if not continue_screen_active:
                 if portal[1].colliderect(self.rect.x + dx, self.rect.y + dy, self.width, self.height):
-                    print('you win')
-                    current_map.temp_portal_list.remove(portal)
                     
+                    current_map.temp_portal_list.remove(portal)
+
+                    # current_map = Map.all[move_on + 1]
+                    # move_on += 1
+
                     continue_screen_active = True
                     continue_screen(self.score)
                     pygame.display.update()
@@ -182,20 +212,59 @@ class Player(pygame.sprite.Sprite):
                     # Change the map upon portal collision
                     # I CAN'T FUCKING FIGURE IT OUT
 
-        # Wait for space bar press to continue
+        # wait for space bar press to continue
         while continue_screen_active:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+
                     # Exit the loop when space bar is pressed
                     continue_screen_active = False
                     
+                    ## for resetting player and camera to start (if map could change)
+                    # self.rect.x = 25
+                    # self.rect.y = 500
+
+                    # current_map.temp_diamond_list = [*current_map.diamond_list]
+                    # current_map.temp_portal_list = [*current_map.portal_list]
+
+                    # camera.reset()
+
+######################## END GAME #############################
+        win_screen_active = False
+
+        for end in current_map.temp_end_list:
+            if not win_screen_active:
+                if end[1].colliderect(self.rect.x + dx, self.rect.y + dy, self.width, self.height):
+
+
+                    current_map.temp_end_list.remove(end)
+                    self.score += 25
+
+                    win_screen_active = True
+                    win_screen(self.score)
+
+                    pygame.display.update()
+
+        while win_screen_active:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+
+                    win_screen_active = False
+
+                    if pygame.key.get_mods():
+                        pygame.key.set_mods(0)
+
                     self.rect.x = 25
                     self.rect.y = 500
+                    self.score = 0
 
+                    current_map.temp_end_list = [*current_map.end_list]
                     current_map.temp_diamond_list = [*current_map.diamond_list]
                     current_map.temp_portal_list = [*current_map.portal_list]
 
                     camera.reset()
+
+                    
 
         self.rect.x += dx
         self.rect.y += dy
@@ -212,3 +281,21 @@ class Player(pygame.sprite.Sprite):
         self.__set_sprite()
 
         return self.sprite
+    
+def draw_world():
+    # draws elements based on camera view
+    # draws tiles based on camera
+    for tile in current_map.tile_list:
+        screen.blit(tile[0], (tile[1][0] - camera.camera.topleft[0], tile[1][1]))
+
+    # draws diamonds based on camera
+    for diamond in current_map.temp_diamond_list:
+        screen.blit(diamond[0], (diamond[1][0] - camera.camera.topleft[0], diamond[1][1]))
+
+    #draws portal based on camera
+    for portal in current_map.temp_portal_list:
+        screen.blit(portal[0], (portal[1][0] - camera.camera.topleft[0], portal[1][1]))
+
+    #draws end game on camera
+    for end in current_map.end_list:
+        screen.blit(end[0], (end[1][0] - camera.camera.topleft[0], end[1][1]))
