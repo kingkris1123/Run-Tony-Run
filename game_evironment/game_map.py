@@ -6,10 +6,12 @@ from game_evironment.game_window import *
 # import gif manager
 import imageio
 
+from game_maps.big_map_one import *
 from game_maps.map_one import *
 from game_maps.map_two import *
 from game_maps.map_three import *
 
+# mooving gif background
 background_gif_path = 'visual_assets/backgrounds/Jungle/Jungle.gif'
 background_gif = imageio.get_reader(background_gif_path)
 background_gif_frames = [
@@ -17,6 +19,7 @@ background_gif_frames = [
     for frame in background_gif
 ]
 
+# for character animation
 frame_index = 0
 
 # game variables for grid
@@ -29,6 +32,7 @@ dirt_base = pygame.image.load('visual_assets/environment_tiles/ground5.png')
 portal_img = pygame.image.load('visual_assets/environment_tiles/portal_image.png')
 diamond_img = pygame.image.load('visual_assets/environment_tiles/diamond.png')
 
+## reads through the game map data and populates the appropriate tiles with numerical code
 class Map():
     all = []
     map_count = 1
@@ -41,6 +45,9 @@ class Map():
 
         self.diamond_list = []
         self.temp_diamond_list = []
+
+        self.end_list =[]
+        self.temp_end_list = []
 
         self.width = len(map_data[0])
         self.height = len(map_data)
@@ -75,6 +82,14 @@ class Map():
                     tile = (image, image_box)
                     self.portal_list.append(tile)
                     self.temp_portal_list = [*self.portal_list]
+                if tile == 4:
+                    image = pygame.transform.scale(portal_img, (TILES, TILES))
+                    image_box = image.get_rect()
+                    image_box.x = column_number * TILES
+                    image_box.y = row_number * TILES
+                    tile = (image, image_box)
+                    self.end_list.append(tile)
+                    self.temp_end_list = [*self.end_list]
                 column_number += 1
             row_number += 1
     
@@ -86,6 +101,8 @@ class Map():
             screen.blit(tile[0], tile[1])
             pygame.draw.rect(screen, (155, 0, 0), tile[1], 2)
 
+
+## builds the 'camera' rectangle
 class Camera():
     def __init__(self, width, height):
         self.camera = pygame.Rect(0, 0, width, height)
@@ -110,7 +127,8 @@ class Camera():
 # camera instance
 camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-map_1 = Map(map_one_data)
-map_2 = Map(map_two_data)
+big_map = Map(big_map_data)
 
-# current_map = map_1
+## try to make multiple maps
+# map_1 = Map(map_one_data)
+# map_2 = Map(map_two_data)
