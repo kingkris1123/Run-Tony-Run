@@ -26,7 +26,6 @@ Run Tony Run was built within the [Pygame](https://www.pygame.org/) library of P
 - And much more.
 
 ### Credits
-This project was created as a Phase Three final project for the Full-Stack Software Engineering Cohort at the Flatiron School in NYC.
 
 Key contributors are:
 - Sajiv Chandrasekaran
