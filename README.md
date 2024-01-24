@@ -9,7 +9,11 @@ Run Tony Run was built within the [Pygame](https://www.pygame.org/) library of P
 ### Game Setup and Start
 - Fork and clone the github repository to your local machine.
 - If you are not already installed, install [Python](https://www.python.org/downloads/) on your location machine.
-- From within the game directory, run **python main.py** in your terminal.
+- From within the game directory, run
+```
+  python main.py
+```
+  
 - This will initialize the game window and begin you on your journey.
 
 ### Keys to Gameplay
